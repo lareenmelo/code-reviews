@@ -19,6 +19,8 @@ class ViewController: UIViewController {
     private var userName = ""
     private var password = ""
     
+    private var network = Networking()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -34,7 +36,35 @@ class ViewController: UIViewController {
 // MARK: - Text Field Delegate
 extension ViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        print(string)
+        
+        if textField == userNameTextField, let userName = userNameTextField.text {
+            
+            network.validate(userName: userName) { (result) in
+                switch result {
+                
+                case .success(let isAvailable):
+                    DispatchQueue.main.async { [weak self] in
+                        if isAvailable {
+                            self?.userNameIcon.tintColor = UIColor.green
+                        } else {
+                            self?.userNameIcon.tintColor = UIColor.red
+                        }
+                    }
+                case .failure(_):
+                    break
+                }
+            }
+        }
+        
+        
+        
+//        print(textField == userNameTextField)
         return true
     }
+    
+    /*
+     textfield end editing? y
+     find out which textfield is currently selected or active
+     save the textfield info accordingly
+     */
 }
