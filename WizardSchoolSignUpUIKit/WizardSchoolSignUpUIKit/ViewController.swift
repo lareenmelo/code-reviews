@@ -23,27 +23,30 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        userNameTextField.delegate = self
-        passwordTextField.delegate = self
-        passwordConfirmationTextField.delegate = self
-
+        NotificationCenter.default.addObserver(
+            forName: UITextField.textDidChangeNotification,
+            object: nil,
+            queue: .main,
+            using: textDidChange
+        )
     }
-    
-    
-}
 
-// MARK: - Text Field Delegate
-extension ViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if textField == userNameTextField, let userName = userNameTextField.text {
-            validate(userName: userName)
-
-        }
-        return true
+    deinit {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UITextField.textDidChangeNotification,
+            object: nil
+        )
     }
-    
+
+    private func textDidChange(_ notification: Notification) -> Void {
+        guard
+            notification.object as? NSObject == userNameTextField,
+            let userName = userNameTextField.text
+        else { return }
+        validate(userName: userName.lowercased())
+    }
+
     private func validate(userName: String) {
          network.validate(userName: userName) { result in
              switch result {
