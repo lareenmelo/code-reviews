@@ -40,23 +40,37 @@ class ViewController: UIViewController {
     }
 
     private func textDidChange(_ notification: Notification) -> Void {
-        guard
-            notification.object as? NSObject == userNameTextField,
-            let userName = userNameTextField.text
-        else { return }
-        validate(userName: userName.lowercased())
+        guard let notificationObject = notification.object as? NSObject else { return }
+        if notificationObject == userNameTextField, let userName = userNameTextField.text {
+            validate(userName: userName.lowercased())
+        } else if notificationObject == passwordTextField, let password = passwordTextField.text {
+            validate(password: password)
+        } else if notificationObject == passwordConfirmationTextField, let passwordConfirmation = passwordConfirmationTextField.text {
+            validate(password: passwordConfirmation, with: passwordTextField.text)
+        }
+    }
+
+    private func validate(password: String) {
+        let isValidPassword = password.count > 8
+        passwordIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
+    }
+
+    private func validate(password: String, with userPassword: String?) {
+        let isValidPassword = password == userPassword
+        passwordConfirmationIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
     }
 
     private func validate(userName: String) {
-         network.validate(userName: userName) { result in
-             switch result {
-             case .success(let isAvailable):
-                 DispatchQueue.main.async { [weak self] in
-                     self?.userNameIcon?.tintColor = isAvailable ? .systemGreen : .systemRed
-                 }
-             case .failure:
-                 break
-             }
-         }
-     }
+        network.validate(userName: userName) { result in
+            switch result {
+            case .success(let isAvailable):
+                DispatchQueue.main.async { [weak self] in
+                    self?.userName = userName
+                    self?.userNameIcon.tintColor = isAvailable ? .systemGreen : .systemRed
+                }
+            case .failure:
+                break
+            }
+        }
+    }
 }
