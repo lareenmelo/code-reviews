@@ -15,6 +15,7 @@
 		DD750FA9258674E400498DC3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD750FA7258674E400498DC3 /* LaunchScreen.storyboard */; };
 		DD750FB4258674E500498DC3 /* WizardSchoolSignUpUIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD750FB3258674E500498DC3 /* WizardSchoolSignUpUIKitTests.swift */; };
 		DD750FBF258674E500498DC3 /* WizardSchoolSignUpUIKitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD750FBE258674E500498DC3 /* WizardSchoolSignUpUIKitUITests.swift */; };
+		FE10F31025A23396007FF943 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE10F30F25A23396007FF943 /* Networking.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		DD750FBA258674E500498DC3 /* WizardSchoolSignUpUIKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WizardSchoolSignUpUIKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD750FBE258674E500498DC3 /* WizardSchoolSignUpUIKitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardSchoolSignUpUIKitUITests.swift; sourceTree = "<group>"; };
 		DD750FC0258674E500498DC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FE10F30F25A23396007FF943 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				DD750FA5258674E400498DC3 /* Assets.xcassets */,
 				DD750FA7258674E400498DC3 /* LaunchScreen.storyboard */,
 				DD750FAA258674E400498DC3 /* Info.plist */,
+				FE10F30F25A23396007FF943 /* Networking.swift */,
 			);
 			path = WizardSchoolSignUpUIKit;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				DD750FA1258674E300498DC3 /* ViewController.swift in Sources */,
 				DD750F9D258674E300498DC3 /* AppDelegate.swift in Sources */,
 				DD750F9F258674E300498DC3 /* SceneDelegate.swift in Sources */,
+				FE10F31025A23396007FF943 /* Networking.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
