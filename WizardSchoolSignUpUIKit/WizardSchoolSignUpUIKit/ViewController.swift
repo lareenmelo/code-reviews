@@ -26,6 +26,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Wizard School Sign Up"
         createAccountButton.isEnabled = configureCreateUserButton()
 
         NotificationCenter.default.addObserver(
