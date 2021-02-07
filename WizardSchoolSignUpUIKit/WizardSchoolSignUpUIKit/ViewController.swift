@@ -23,37 +23,54 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        userNameTextField.delegate = self
-        passwordTextField.delegate = self
-        passwordConfirmationTextField.delegate = self
-
+        NotificationCenter.default.addObserver(
+            forName: UITextField.textDidChangeNotification,
+            object: nil,
+            queue: .main,
+            using: textDidChange
+        )
     }
-    
-    
-}
 
-// MARK: - Text Field Delegate
-extension ViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if textField == userNameTextField, let userName = userNameTextField.text {
-            validate(userName: userName)
+    deinit {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UITextField.textDidChangeNotification,
+            object: nil
+        )
+    }
 
+    private func textDidChange(_ notification: Notification) -> Void {
+        guard let notificationObject = notification.object as? NSObject else { return }
+        if notificationObject == userNameTextField, let userName = userNameTextField.text {
+            validate(userName: userName.lowercased())
+        } else if notificationObject == passwordTextField, let password = passwordTextField.text {
+            validate(password: password)
+        } else if notificationObject == passwordConfirmationTextField, let passwordConfirmation = passwordConfirmationTextField.text {
+            validate(password: passwordConfirmation, with: passwordTextField.text)
         }
-        return true
     }
-    
+
+    private func validate(password: String) {
+        let isValidPassword = password.count > 8
+        passwordIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
+    }
+
+    private func validate(password: String, with userPassword: String?) {
+        let isValidPassword = password == userPassword
+        passwordConfirmationIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
+    }
+
     private func validate(userName: String) {
-         network.validate(userName: userName) { result in
-             switch result {
-             case .success(let isAvailable):
-                 DispatchQueue.main.async { [weak self] in
-                     self?.userNameIcon?.tintColor = isAvailable ? .systemGreen : .systemRed
-                 }
-             case .failure:
-                 break
-             }
-         }
-     }
+        network.validate(userName: userName) { result in
+            switch result {
+            case .success(let isAvailable):
+                DispatchQueue.main.async { [weak self] in
+                    self?.userName = userName
+                    self?.userNameIcon.tintColor = isAvailable ? .systemGreen : .systemRed
+                }
+            case .failure:
+                break
+            }
+        }
+    }
 }
