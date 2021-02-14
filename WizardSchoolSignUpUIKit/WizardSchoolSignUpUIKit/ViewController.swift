@@ -27,8 +27,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        createAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
-        title = "Wizard School Sign Up"
+        configureView()
         configureCreateUserButton()
 
         NotificationCenter.default.addObserver(
@@ -45,6 +44,17 @@ class ViewController: UIViewController {
             name: UITextField.textDidChangeNotification,
             object: nil
         )
+    }
+
+    private func configureView() {
+        title = "Wizard School Sign Up"
+
+        let iconConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
+        userNameIcon.preferredSymbolConfiguration = iconConfiguration
+        passwordIcon.preferredSymbolConfiguration = iconConfiguration
+        passwordConfirmationIcon.preferredSymbolConfiguration = iconConfiguration
+
+        createAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
