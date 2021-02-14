@@ -59,6 +59,8 @@ class ViewController: UIViewController {
 
         createAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
         configureStackViews()
+
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -132,5 +134,9 @@ class ViewController: UIViewController {
             self.createAccountButton.backgroundColor = shouldEnableButton ? UIColor.systemGreen : UIColor.systemGreen.withAlphaComponent(0.5)
             self.createAccountButton.isEnabled = shouldEnableButton
         }
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
