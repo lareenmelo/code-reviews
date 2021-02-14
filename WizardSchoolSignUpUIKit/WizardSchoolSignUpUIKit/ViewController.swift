@@ -26,7 +26,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        createAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
         title = "Wizard School Sign Up"
         configureCreateUserButton()
 
@@ -44,6 +45,10 @@ class ViewController: UIViewController {
             name: UITextField.textDidChangeNotification,
             object: nil
         )
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        createAccountButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
     }
 
     private func textDidChange(_ notification: Notification) -> Void {
