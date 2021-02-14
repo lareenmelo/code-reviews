@@ -18,11 +18,18 @@ class ViewController: UIViewController {
     
     private var userName = ""
     private var password = ""
-    
+    private var isUserNameValid: Bool = false
+    private var isPasswordValid: Bool = false
+    private var isPasswordConfirmationValid: Bool = false
+
     private var network = Networking()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Wizard School Sign Up"
+        configureCreateUserButton()
+
         NotificationCenter.default.addObserver(
             forName: UITextField.textDidChangeNotification,
             object: nil,
@@ -45,19 +52,25 @@ class ViewController: UIViewController {
             validate(userName: userName.lowercased())
         } else if notificationObject == passwordTextField, let password = passwordTextField.text {
             validate(password: password)
+            configureCreateUserButton()
+
         } else if notificationObject == passwordConfirmationTextField, let passwordConfirmation = passwordConfirmationTextField.text {
             validate(password: passwordConfirmation, with: passwordTextField.text)
+            configureCreateUserButton()
+
         }
     }
 
     private func validate(password: String) {
         let isValidPassword = password.count > 8
         passwordIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
+        isPasswordValid = isValidPassword
     }
 
     private func validate(password: String, with userPassword: String?) {
         let isValidPassword = password == userPassword
         passwordConfirmationIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
+        isPasswordConfirmationValid = isValidPassword
     }
 
     private func validate(userName: String) {
@@ -65,12 +78,26 @@ class ViewController: UIViewController {
             switch result {
             case .success(let isAvailable):
                 DispatchQueue.main.async { [weak self] in
-                    self?.userName = userName
-                    self?.userNameIcon.tintColor = isAvailable ? .systemGreen : .systemRed
+                    guard let self = self else { return }
+                    self.userName = userName
+                    self.userNameIcon.tintColor = isAvailable ? .systemGreen : .systemRed
+                    self.isUserNameValid = isAvailable
+                    self.configureCreateUserButton()
+
                 }
             case .failure:
                 break
             }
+        }
+    }
+    
+    private func configureCreateUserButton() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            let shouldEnableButton = self.isUserNameValid && self.isPasswordValid && self.isPasswordConfirmationValid
+            self.createAccountButton.backgroundColor = shouldEnableButton ? UIColor.systemGreen : UIColor.systemGreen.withAlphaComponent(0.5)
+            self.createAccountButton.isEnabled = shouldEnableButton
         }
     }
 }
