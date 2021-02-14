@@ -35,6 +35,9 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Okd-WQ-AeS" secondAttribute="trailing" id="hKo-Ik-ACK"/>
+                                        </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="azy-8j-5nS">
                                         <rect key="frame" x="0.0" y="42" width="366" height="34"/>
@@ -50,6 +53,9 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Ysx-VQ-Kof" secondAttribute="trailing" id="6gp-uw-lXm"/>
+                                        </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="KQt-ln-1qC">
                                         <rect key="frame" x="0.0" y="84" width="366" height="34"/>
@@ -65,6 +71,9 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Xai-Tg-c0L" secondAttribute="trailing" id="ndy-5K-f4j"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                             </stackView>
@@ -95,10 +104,13 @@
                     <connections>
                         <outlet property="createAccountButton" destination="UBv-UF-OQd" id="YMK-sy-JlB"/>
                         <outlet property="passwordConfirmationIcon" destination="iGt-uH-cpX" id="PRU-1a-PcV"/>
+                        <outlet property="passwordConfirmationStackView" destination="KQt-ln-1qC" id="s65-CC-54A"/>
                         <outlet property="passwordConfirmationTextField" destination="Xai-Tg-c0L" id="7f5-1D-PcX"/>
                         <outlet property="passwordIcon" destination="ir1-0F-6T5" id="vbh-w9-2zO"/>
+                        <outlet property="passwordStackView" destination="azy-8j-5nS" id="8f1-8T-60V"/>
                         <outlet property="passwordTextField" destination="Ysx-VQ-Kof" id="JIK-7u-Tpe"/>
                         <outlet property="userNameIcon" destination="PC7-Ms-Pvl" id="JJz-7y-ddB"/>
+                        <outlet property="userNameStackView" destination="CF5-YE-XEU" id="Myk-UT-U98"/>
                         <outlet property="userNameTextField" destination="Okd-WQ-AeS" id="k6r-wk-M6H"/>
                     </connections>
                 </viewController>
