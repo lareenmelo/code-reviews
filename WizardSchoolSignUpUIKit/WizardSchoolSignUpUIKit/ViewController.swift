@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Wizard School Sign Up"
-        createAccountButton.isEnabled = configureCreateUserButton()
+        configureCreateUserButton()
 
         NotificationCenter.default.addObserver(
             forName: UITextField.textDidChangeNotification,
@@ -52,11 +52,11 @@ class ViewController: UIViewController {
             validate(userName: userName.lowercased())
         } else if notificationObject == passwordTextField, let password = passwordTextField.text {
             validate(password: password)
-            createAccountButton.isEnabled = configureCreateUserButton()
+            configureCreateUserButton()
 
         } else if notificationObject == passwordConfirmationTextField, let passwordConfirmation = passwordConfirmationTextField.text {
             validate(password: passwordConfirmation, with: passwordTextField.text)
-            createAccountButton.isEnabled = configureCreateUserButton()
+            configureCreateUserButton()
 
         }
     }
@@ -82,7 +82,7 @@ class ViewController: UIViewController {
                     self.userName = userName
                     self.userNameIcon.tintColor = isAvailable ? .systemGreen : .systemRed
                     self.isUserNameValid = isAvailable
-                    self.createAccountButton.isEnabled = self.configureCreateUserButton()
+                    self.configureCreateUserButton()
 
                 }
             case .failure:
@@ -91,13 +91,13 @@ class ViewController: UIViewController {
         }
     }
     
-    private func configureCreateUserButton() -> Bool {
-        if isUserNameValid && isPasswordValid && isPasswordConfirmationValid {
-            createAccountButton.backgroundColor = UIColor.systemGreen
-            return true
+    private func configureCreateUserButton() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            let shouldEnableButton = self.isUserNameValid && self.isPasswordValid && self.isPasswordConfirmationValid
+            self.createAccountButton.backgroundColor = shouldEnableButton ? UIColor.systemGreen : UIColor.systemGreen.withAlphaComponent(0.5)
+            self.createAccountButton.isEnabled = shouldEnableButton
         }
-        createAccountButton.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.5)
-        return false
-        
     }
 }
