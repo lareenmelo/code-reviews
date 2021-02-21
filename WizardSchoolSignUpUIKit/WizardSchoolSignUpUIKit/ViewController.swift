@@ -8,10 +8,13 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet private var userNameStackView: UIStackView!
     @IBOutlet private var userNameTextField: UITextField!
     @IBOutlet private var userNameIcon: UIImageView!
+    @IBOutlet private var passwordStackView: UIStackView!
     @IBOutlet private var passwordTextField: UITextField!
     @IBOutlet private var passwordIcon: UIImageView!
+    @IBOutlet private var passwordConfirmationStackView: UIStackView!
     @IBOutlet private var passwordConfirmationTextField: UITextField!
     @IBOutlet private var passwordConfirmationIcon: UIImageView!
     @IBOutlet private var createAccountButton: UIButton!
@@ -26,8 +29,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        title = "Wizard School Sign Up"
+
+        configureView()
         configureCreateUserButton()
 
         NotificationCenter.default.addObserver(
@@ -44,6 +47,38 @@ class ViewController: UIViewController {
             name: UITextField.textDidChangeNotification,
             object: nil
         )
+    }
+
+    private func configureView() {
+        title = "Wizard School Sign Up"
+
+        let iconConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
+        userNameIcon.preferredSymbolConfiguration = iconConfiguration
+        passwordIcon.preferredSymbolConfiguration = iconConfiguration
+        passwordConfirmationIcon.preferredSymbolConfiguration = iconConfiguration
+
+        createAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        configureStackViews()
+
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        createAccountButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+        configureStackViews()
+    }
+
+    private func configureStackViews() {
+        let isAccessibilityCategory = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        userNameStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
+        passwordStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
+        passwordConfirmationStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
+
+        userNameStackView.alignment = isAccessibilityCategory ? .leading : .fill
+        passwordStackView.alignment = isAccessibilityCategory ? .leading : .fill
+        passwordConfirmationStackView.alignment = isAccessibilityCategory ? .leading : .fill
     }
 
     private func textDidChange(_ notification: Notification) -> Void {
@@ -99,5 +134,9 @@ class ViewController: UIViewController {
             self.createAccountButton.backgroundColor = shouldEnableButton ? UIColor.systemGreen : UIColor.systemGreen.withAlphaComponent(0.5)
             self.createAccountButton.isEnabled = shouldEnableButton
         }
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
