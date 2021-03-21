@@ -51,6 +51,9 @@ class ViewController: UIViewController {
 
     private func configureView() {
         title = "Wizard School Sign Up"
+        
+        passwordConfirmationTextField.isEnabled = false
+        passwordConfirmationIcon.alpha = 0.5
 
         let iconConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
         userNameIcon.preferredSymbolConfiguration = iconConfiguration
@@ -85,12 +88,19 @@ class ViewController: UIViewController {
         guard let notificationObject = notification.object as? NSObject else { return }
         if notificationObject == userNameTextField, let userName = userNameTextField.text {
             validate(userName: userName.lowercased())
-        } else if notificationObject == passwordTextField, let password = passwordTextField.text {
-            validate(password: password)
+            
+        } else if notificationObject == passwordTextField {
+            passwordMatch(passwordTextField, passwordConfirmationTextField)
             configureCreateUserButton()
+  
+            passwordConfirmationTextField.isEnabled = true
+            // We're doing this because textfield is cancelled and it's showing a
+            // gray background shade when we enable it
+            passwordConfirmationTextField.backgroundColor = .white
+            passwordConfirmationIcon.alpha = 1
 
-        } else if notificationObject == passwordConfirmationTextField, let passwordConfirmation = passwordConfirmationTextField.text {
-            validate(password: passwordConfirmation, with: passwordTextField.text)
+        } else if notificationObject == passwordConfirmationTextField {
+            passwordMatch(passwordTextField, passwordConfirmationTextField)
             configureCreateUserButton()
 
         }
@@ -106,6 +116,21 @@ class ViewController: UIViewController {
         let isValidPassword = password == userPassword
         passwordConfirmationIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
         isPasswordConfirmationValid = isValidPassword
+    }
+
+    private func passwordMatch(_ passwordTextField: UITextField, _ passwordConfirmationTextField: UITextField) {
+        let password = passwordTextField
+        let passwordConfirmation = passwordConfirmationTextField
+        
+        guard let passwordText = password.text else { return }
+        
+        if passwordConfirmation.text == nil || passwordConfirmation.text == "" {
+            validate(password: passwordText)
+        } else {
+            guard let passwordConfirmationText = passwordConfirmation.text else { return }
+            validate(password: passwordText)
+            validate(password: passwordConfirmationText, with: password.text)
+        }
     }
 
     private func validate(userName: String) {
