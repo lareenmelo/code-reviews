@@ -24,15 +24,15 @@ class ViewController: UIViewController {
     private var isUserNameValid: Bool = false
     private var isPasswordValid: Bool = false
     private var isPasswordConfirmationValid: Bool = false
-
+    
     private var network = Networking()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configureView()
         configureCreateUserButton()
-
+        
         NotificationCenter.default.addObserver(
             forName: UITextField.textDidChangeNotification,
             object: nil,
@@ -40,7 +40,7 @@ class ViewController: UIViewController {
             using: textDidChange
         )
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(
             self,
@@ -48,43 +48,43 @@ class ViewController: UIViewController {
             object: nil
         )
     }
-
+    
     private func configureView() {
         title = "Wizard School Sign Up"
         
         passwordConfirmationTextField.isEnabled = false
         passwordConfirmationIcon.alpha = 0.5
-
+        
         createAccountButton.layer.cornerRadius = 8
         let iconConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
         userNameIcon.preferredSymbolConfiguration = iconConfiguration
         passwordIcon.preferredSymbolConfiguration = iconConfiguration
         passwordConfirmationIcon.preferredSymbolConfiguration = iconConfiguration
-
+        
         createAccountButton.titleLabel?.adjustsFontForContentSizeCategory = true
         configureStackViews()
-
+        
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
-
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
+        
         createAccountButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         configureStackViews()
     }
-
+    
     private func configureStackViews() {
         let isAccessibilityCategory = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         userNameStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
         passwordStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
         passwordConfirmationStackView.axis = isAccessibilityCategory ? .vertical : .horizontal
-
+        
         userNameStackView.alignment = isAccessibilityCategory ? .leading : .fill
         passwordStackView.alignment = isAccessibilityCategory ? .leading : .fill
         passwordConfirmationStackView.alignment = isAccessibilityCategory ? .leading : .fill
     }
-
+    
     private func textDidChange(_ notification: Notification) -> Void {
         guard let notificationObject = notification.object as? NSObject else { return }
         if notificationObject == userNameTextField, let userName = userNameTextField.text {
@@ -93,32 +93,32 @@ class ViewController: UIViewController {
         } else if notificationObject == passwordTextField {
             passwordMatch(passwordTextField, passwordConfirmationTextField)
             configureCreateUserButton()
-  
+            
             passwordConfirmationTextField.isEnabled = true
             // We're doing this because textfield is cancelled and it's showing a
             // gray background shade when we enable it
             passwordConfirmationTextField.backgroundColor = .white
             passwordConfirmationIcon.alpha = 1
-
+            
         } else if notificationObject == passwordConfirmationTextField {
             passwordMatch(passwordTextField, passwordConfirmationTextField)
             configureCreateUserButton()
-
+            
         }
     }
-
+    
     private func validate(password: String) {
         let isValidPassword = password.count > 8
         passwordIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
         isPasswordValid = isValidPassword
     }
-
+    
     private func validate(password: String, with userPassword: String?) {
         let isValidPassword = password == userPassword
         passwordConfirmationIcon.tintColor = isValidPassword ? .systemGreen : .systemRed
         isPasswordConfirmationValid = isValidPassword
     }
-
+    
     private func passwordMatch(_ passwordTextField: UITextField, _ passwordConfirmationTextField: UITextField) {
         let password = passwordTextField
         let passwordConfirmation = passwordConfirmationTextField
@@ -133,22 +133,36 @@ class ViewController: UIViewController {
             validate(password: passwordConfirmationText, with: password.text)
         }
     }
-
+    
     private func validate(userName: String) {
-        network.validate(userName: userName) { result in
-            switch result {
-            case .success(let isAvailable):
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.userName = userName
-                    self.userNameIcon.tintColor = isAvailable ? .systemGreen : .systemRed
-                    self.isUserNameValid = isAvailable
-                    self.configureCreateUserButton()
-
+        let satisfies = userName.allSatisfy { (character) -> Bool in
+            return !character.isWhitespace && (character.isLetter || character.isNumber)
+        }
+        
+        if userName.isEmpty || !satisfies {
+            configureUserName(with: userName, isValid: false)
+            
+        } else {
+            network.validate(userName: userName) { result in
+                switch result {
+                case .success(let isAvailable):
+                    self.configureUserName(with: userName, isValid: isAvailable)
+                case .failure:
+                    break
                 }
-            case .failure:
-                break
             }
+            
+        }
+    }
+    
+    private func configureUserName(with userName: String, isValid: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.userName = userName
+            self.userNameIcon.tintColor = isValid ? .systemGreen : .systemRed
+            self.isUserNameValid = isValid
+            self.configureCreateUserButton()
+            
         }
     }
     
@@ -161,7 +175,7 @@ class ViewController: UIViewController {
             self.createAccountButton.isEnabled = shouldEnableButton
         }
     }
-
+    
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
