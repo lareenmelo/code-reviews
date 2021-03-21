@@ -55,6 +55,7 @@ class ViewController: UIViewController {
         passwordConfirmationTextField.isEnabled = false
         passwordConfirmationIcon.alpha = 0.5
 
+        createAccountButton.layer.cornerRadius = 8
         let iconConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
         userNameIcon.preferredSymbolConfiguration = iconConfiguration
         passwordIcon.preferredSymbolConfiguration = iconConfiguration
