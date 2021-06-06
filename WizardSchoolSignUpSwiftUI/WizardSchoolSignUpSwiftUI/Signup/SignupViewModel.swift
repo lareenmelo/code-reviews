@@ -12,11 +12,12 @@ public class SignupViewModel: ObservableObject {
     @Published var username: String = ""
     @Published var password: String = ""
     @Published var passwordConfirmation: String = ""
-    @Published var isUsernameValid = ValidationState.initial
+    @Published var usernameState = ValidationState.initial
     private var cancellables = Set<AnyCancellable>()
 
     init() {
         $username
+            .dropFirst()
             .map { username -> ValidationState in
                 if username.isEmpty || username.contains(" ") {
                     return ValidationState.invalid
@@ -24,7 +25,7 @@ public class SignupViewModel: ObservableObject {
                     return ValidationState.valid
                 }
             }
-            .assign(to: \.isUsernameValid, on: self)
+            .assign(to: \.usernameState, on: self)
             .store(in: &cancellables)
     }
 }

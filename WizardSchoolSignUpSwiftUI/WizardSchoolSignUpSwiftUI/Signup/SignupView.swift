@@ -30,9 +30,7 @@ struct SignupView: View {
         VStack(spacing: 12) {
             HStack {
                 Image(systemName: "person.circle")
-                    .foregroundColor(viewModel.isUsernameValid == .valid ? .green : .red)
-//                TextField("Wizard name", text: $username)
-//                TextField("Wizard name", text: .)
+                    .foregroundColor(viewModel.usernameState.color)
                 TextField("Wizard name", text: Binding.init(get: {
                     self.viewModel.username
                 }, set: { (username) in
@@ -66,6 +64,19 @@ struct SignupView: View {
             .background(Color.green)
             .cornerRadius(8)
         })
+    }
+}
+
+private extension SignupViewModel.ValidationState {
+    var color: Color {
+        switch self {
+        case .initial:
+            return Color(.label)
+        case .valid:
+            return Color(.systemGreen)
+        case .invalid:
+            return Color(.systemRed)
+        }
     }
 }
 
