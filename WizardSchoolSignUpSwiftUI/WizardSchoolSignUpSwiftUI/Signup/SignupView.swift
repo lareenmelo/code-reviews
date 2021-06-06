@@ -1,16 +1,18 @@
 //
-//  ContentView.swift
+//  SignupView.swift
 //  WizardSchoolSignUpSwiftUI
 //
 //  Created by Jhonny Bill on 3/28/21.
 //
 
 import SwiftUI
+import Combine
 
-struct ContentView: View {
-    @State private var username: String = ""
+struct SignupView: View {
+//    @State private var username: String = ""
     @State private var password: String = ""
     @State private var passwordConfirmation: String = ""
+    @ObservedObject private var viewModel = SignupViewModel()
 
     var body: some View {
         NavigationView {
@@ -28,7 +30,14 @@ struct ContentView: View {
         VStack(spacing: 12) {
             HStack {
                 Image(systemName: "person.circle")
-                TextField("Wizard name", text: $username)
+                    .foregroundColor(viewModel.isUsernameValid == .valid ? .green : .red)
+//                TextField("Wizard name", text: $username)
+//                TextField("Wizard name", text: .)
+                TextField("Wizard name", text: Binding.init(get: {
+                    self.viewModel.username
+                }, set: { (username) in
+                    self.viewModel.username = username
+                }))
             }
 
             HStack {
@@ -62,6 +71,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        SignupView()
     }
 }

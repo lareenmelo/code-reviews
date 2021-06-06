@@ -11,7 +11,7 @@ import SwiftUI
 struct WizardSchoolSignUpSwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SignupView()
         }
     }
 }
