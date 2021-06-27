@@ -14,17 +14,22 @@ public class SignupViewModel: ObservableObject {
     @Published var passwordConfirmation: String = ""
     @Published private(set) var usernameState = ValidationState.initial
     @Published private(set) var passwordState = ValidationState.initial
+    @Published private(set) var passwordConfirmationState = ValidationState.initial
 
     private let network = Networking()
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        let isUsernameValid = $username
+
+        let username = $username
+            .dropFirst()
+
+        let isUsernameValid = username
             .dropFirst()
             .map { !$0.isEmpty && !$0.contains(" ") }
 
         isUsernameValid
-            .combineLatest($username)
+            .combineLatest(username)
             .removeDuplicates(by: { $0.1 == $1.1 })
             .flatMap { [weak self] isUsernameValid, username -> AnyPublisher<ValidationState, Never> in
                 guard let self = self, isUsernameValid else { return Just(.invalid).eraseToAnyPublisher() }
@@ -37,14 +42,25 @@ public class SignupViewModel: ObservableObject {
             .assign(to: \.usernameState, on: self)
             .store(in: &cancellables)
 
-        $password
+        let password = $password
             .dropFirst()
+
+        password
             .map { password -> ValidationState in
                 let isValid = password.count > 8
                 return isValid ? .valid : .invalid
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.passwordState, on: self)
+            .store(in: &cancellables)
+
+        Publishers.CombineLatest(password, $passwordConfirmation.dropFirst())
+            .map { password, passwordConfirmation -> ValidationState in
+                let isValid = password == passwordConfirmation
+                return isValid ? .valid : .invalid
+            }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.passwordConfirmationState, on: self)
             .store(in: &cancellables)
     }
 }
