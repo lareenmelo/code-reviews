@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias ValidateCompletion = (Result<Bool,Error>) -> Void
+typealias ValidateCompletion = (Result<Bool, Error>) -> Void
 
 class Networking {
     /// Validates that the user name is available to use

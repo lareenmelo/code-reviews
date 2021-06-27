@@ -9,7 +9,6 @@ import SwiftUI
 import Combine
 
 struct SignupView: View {
-//    @State private var username: String = ""
     @State private var password: String = ""
     @State private var passwordConfirmation: String = ""
     @ObservedObject private var viewModel = SignupViewModel()

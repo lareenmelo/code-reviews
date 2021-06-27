@@ -13,23 +13,31 @@ public class SignupViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var passwordConfirmation: String = ""
     @Published var usernameState = ValidationState.initial
+
+    private let network = Networking()
+
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        $username
+        let isUsernameValid = $username
             .dropFirst()
-            .map { username -> ValidationState in
-                if username.isEmpty || username.contains(" ") {
-                    return ValidationState.invalid
-                } else {
-                    return ValidationState.valid
-                }
+            .map { !$0.isEmpty && !$0.contains(" ") }
+
+        isUsernameValid
+            .combineLatest($username)
+            .removeDuplicates(by: { $0.1 == $1.1 })
+            .flatMap { [weak self] isUsernameValid, username -> AnyPublisher<ValidationState, Never> in
+                guard let self = self, isUsernameValid else { return Just(.invalid).eraseToAnyPublisher() }
+                return self.network.validatePublisher(userName: username)
+                    .replaceError(with: false)
+                    .map { $0 ? ValidationState.valid : ValidationState.invalid }
+                    .eraseToAnyPublisher()
             }
+            .receive(on: DispatchQueue.main)
             .assign(to: \.usernameState, on: self)
             .store(in: &cancellables)
     }
 }
-
 
 /*
  private - "network" call

@@ -9,21 +9,25 @@
 /* Begin PBXBuildFile section */
 		0DB471FC261A106C00E9D02A /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB471FB261A106C00E9D02A /* SignupViewModel.swift */; };
 		0DB47201261A25AD00E9D02A /* ValidationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB47200261A25AD00E9D02A /* ValidationState.swift */; };
+		DD5A380F266D354B004E8A54 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5A380E266D354B004E8A54 /* Networking.swift */; };
 		DD6AAEF42610CDCE003B77D3 /* WizardSchoolSignUpSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6AAEF32610CDCE003B77D3 /* WizardSchoolSignUpSwiftUIApp.swift */; };
 		DD6AAEF62610CDCE003B77D3 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6AAEF52610CDCE003B77D3 /* SignupView.swift */; };
 		DD6AAEF82610CDD0003B77D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD6AAEF72610CDD0003B77D3 /* Assets.xcassets */; };
 		DD6AAEFB2610CDD0003B77D3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD6AAEFA2610CDD0003B77D3 /* Preview Assets.xcassets */; };
+		DD85456C2688EA2A0056B82B /* Networking+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD85456B2688EA2A0056B82B /* Networking+Combine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0DB471FB261A106C00E9D02A /* SignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
 		0DB47200261A25AD00E9D02A /* ValidationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationState.swift; sourceTree = "<group>"; };
+		DD5A380E266D354B004E8A54 /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Networking.swift; path = ../../WizardSchoolSignUpUIKit/WizardSchoolSignUpUIKit/Networking.swift; sourceTree = "<group>"; };
 		DD6AAEF02610CDCE003B77D3 /* WizardSchoolSignUpSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WizardSchoolSignUpSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD6AAEF32610CDCE003B77D3 /* WizardSchoolSignUpSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardSchoolSignUpSwiftUIApp.swift; sourceTree = "<group>"; };
 		DD6AAEF52610CDCE003B77D3 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		DD6AAEF72610CDD0003B77D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD6AAEFA2610CDD0003B77D3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DD6AAEFC2610CDD0003B77D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DD85456B2688EA2A0056B82B /* Networking+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Networking+Combine.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,8 @@
 				0DB471FA261A105400E9D02A /* Signup */,
 				DD6AAEF32610CDCE003B77D3 /* WizardSchoolSignUpSwiftUIApp.swift */,
 				DD6AAEF72610CDD0003B77D3 /* Assets.xcassets */,
+				DD5A380E266D354B004E8A54 /* Networking.swift */,
+				DD85456B2688EA2A0056B82B /* Networking+Combine.swift */,
 				DD6AAEFC2610CDD0003B77D3 /* Info.plist */,
 				DD6AAEF92610CDD0003B77D3 /* Preview Content */,
 			);
@@ -153,6 +159,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DB47201261A25AD00E9D02A /* ValidationState.swift in Sources */,
+				DD85456C2688EA2A0056B82B /* Networking+Combine.swift in Sources */,
+				DD5A380F266D354B004E8A54 /* Networking.swift in Sources */,
 				0DB471FC261A106C00E9D02A /* SignupViewModel.swift in Sources */,
 				DD6AAEF62610CDCE003B77D3 /* SignupView.swift in Sources */,
 				DD6AAEF42610CDCE003B77D3 /* WizardSchoolSignUpSwiftUIApp.swift in Sources */,
