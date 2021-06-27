@@ -58,9 +58,10 @@ struct SignupView: View {
                 Spacer()
             }
             .padding()
-            .background(Color.green)
+            .background(viewModel.isCreateAccountButtonDisabled ? Color.green.opacity(0.5) : Color.green)
             .cornerRadius(8)
         })
+        .disabled(viewModel.isCreateAccountButtonDisabled)
     }
 }
 

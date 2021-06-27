@@ -15,6 +15,7 @@ public class SignupViewModel: ObservableObject {
     @Published private(set) var usernameState = ValidationState.initial
     @Published private(set) var passwordState = ValidationState.initial
     @Published private(set) var passwordConfirmationState = ValidationState.initial
+    @Published private(set) var isCreateAccountButtonDisabled = true
 
     private let network = Networking()
     private var cancellables = Set<AnyCancellable>()
@@ -61,11 +62,16 @@ public class SignupViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: \.passwordConfirmationState, on: self)
             .store(in: &cancellables)
+
+        Publishers.CombineLatest3($usernameState, $passwordState, $passwordConfirmationState)
+            .map { usernameState, passwordState, passwordConfirmationState -> Bool in
+                return usernameState == ValidationState.valid
+                    && passwordState == ValidationState.valid
+                    && passwordConfirmationState == ValidationState.valid
+            }
+            .map { !$0 }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.isCreateAccountButtonDisabled, on: self)
+            .store(in: &cancellables)
     }
 }
-
-/*
- private - "network" call
- public - action triggers (button)
- public - validation de los textfields and button
- */
