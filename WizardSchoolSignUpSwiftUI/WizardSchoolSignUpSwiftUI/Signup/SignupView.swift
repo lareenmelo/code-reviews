@@ -40,13 +40,13 @@ struct SignupView: View {
             HStack {
                 Image(systemName: "lock.circle")
                     .foregroundColor(viewModel.passwordState.color)
-                TextField("Password", text: $viewModel.password)
+                SecureField("Password", text: $viewModel.password)
             }
 
             HStack {
                 Image(systemName: "lock.circle")
                     .foregroundColor(viewModel.passwordConfirmationState.color)
-                TextField("Password Confirmation", text: $viewModel.passwordConfirmation)
+                SecureField("Password Confirmation", text: $viewModel.passwordConfirmation)
             }
         }
         .textFieldStyle(RoundedBorderTextFieldStyle())
