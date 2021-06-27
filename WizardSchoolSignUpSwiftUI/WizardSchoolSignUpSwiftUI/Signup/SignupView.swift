@@ -30,11 +30,7 @@ struct SignupView: View {
             HStack {
                 Image(systemName: "person.circle")
                     .foregroundColor(viewModel.usernameState.color)
-                TextField("Wizard name", text: Binding.init(get: {
-                    self.viewModel.username
-                }, set: { (username) in
-                    self.viewModel.username = username
-                }))
+                TextField("Wizard name", text: $viewModel.username)
             }
 
             HStack {

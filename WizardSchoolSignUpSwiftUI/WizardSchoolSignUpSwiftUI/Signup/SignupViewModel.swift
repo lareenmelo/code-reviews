@@ -25,7 +25,6 @@ public class SignupViewModel: ObservableObject {
             .dropFirst()
 
         let isUsernameValid = username
-            .dropFirst()
             .map { !$0.isEmpty && !$0.contains(" ") }
 
         isUsernameValid
