@@ -12,10 +12,10 @@ public class SignupViewModel: ObservableObject {
     @Published var username: String = ""
     @Published var password: String = ""
     @Published var passwordConfirmation: String = ""
-    @Published var usernameState = ValidationState.initial
+    @Published private(set) var usernameState = ValidationState.initial
+    @Published private(set) var passwordState = ValidationState.initial
 
     private let network = Networking()
-
     private var cancellables = Set<AnyCancellable>()
 
     init() {
@@ -35,6 +35,16 @@ public class SignupViewModel: ObservableObject {
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.usernameState, on: self)
+            .store(in: &cancellables)
+
+        $password
+            .dropFirst()
+            .map { password -> ValidationState in
+                let isValid = password.count > 8
+                return isValid ? .valid : .invalid
+            }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.passwordState, on: self)
             .store(in: &cancellables)
     }
 }

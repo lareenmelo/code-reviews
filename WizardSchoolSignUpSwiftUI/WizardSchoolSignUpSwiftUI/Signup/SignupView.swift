@@ -39,7 +39,8 @@ struct SignupView: View {
 
             HStack {
                 Image(systemName: "lock.circle")
-                TextField("Password", text: $password)
+                    .foregroundColor(viewModel.passwordState.color)
+                TextField("Password", text: $viewModel.password)
             }
 
             HStack {
